@@ -8,6 +8,8 @@ import { authConfig } from './config/auth.config';
 import { appConfigSchema } from './config/config.types';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { TypedConfigService } from './config/typed-config.service';
+import { User } from './users/users.entity';
+import { UsersModule } from './users/users.module';
 
 @Module({
   imports: [
@@ -25,9 +27,10 @@ import { TypedConfigService } from './config/typed-config.service';
       inject: [ConfigService],
       useFactory: (configService: TypedConfigService) =>  ({
         ...configService.get('database'),
-        entities: []
+        entities: [User]
       })
     }),
+    UsersModule,
   ],
   controllers: [AppController],
   providers: [AppService, {
